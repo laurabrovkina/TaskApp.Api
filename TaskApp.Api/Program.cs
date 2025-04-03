@@ -21,7 +21,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 DbInitializer.Initialize(DbConstants.DefaultConnectionStringPath);
 
-app.MapPost("/task", async (ITaskService taskService, CreateTask createTask) =>
+app.MapPost("/task", async (CreateTask createTask, ITaskService taskService) =>
     {
         await taskService.Create(createTask);
     })
