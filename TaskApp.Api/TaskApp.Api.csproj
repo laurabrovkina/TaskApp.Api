@@ -22,4 +22,10 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Persistence\Database\Scripts\001_InitDatabase.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
