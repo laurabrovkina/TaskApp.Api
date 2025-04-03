@@ -1,0 +1,35 @@
+﻿services:
+  taskapp.api:
+    image: taskapp.api
+    container_name: taskapp.api
+    build:
+      context: .
+      dockerfile: TaskApp.Api/Dockerfile
+    ports:
+      - "5128:5128"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Database__ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=taskdb;Username=postgres;Password=strong_password;
+    depends_on:
+      db:
+        condition: service_healthy
+        
+  db:
+    container_name: taskdb
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: taskdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: strong_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d taskdb"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+
+volumes:
+  postgres_data:

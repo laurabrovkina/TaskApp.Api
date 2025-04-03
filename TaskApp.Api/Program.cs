@@ -1,0 +1,42 @@
+using TaskApp.Api.Extensions;
+using TaskApp.Api.Models;
+using TaskApp.Api.Persistence;
+using TaskApp.Api.Services;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddServices();
+builder.Services.AddPersistence();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+DbInitializer.Initialize(DbConstants.DefaultConnectionStringPath);
+
+app.MapPost("/task", async (ITaskService taskService, CreateTask createTask) =>
+    {
+        await taskService.Create(createTask);
+    })
+    .WithName("CreateTask")
+    .WithOpenApi();
+
+app.MapGet("/tasks", async (ITaskService taskService) => await taskService.GetAllAsync())
+    .WithName("GetTasks")
+    .WithOpenApi();
+
+app.MapDelete("/task", async (Guid id, ITaskService taskService) =>
+    {
+        await taskService.Delete(id);
+    })
+    .WithName("DeleteTask")
+    .WithOpenApi();
+
+app.Run();
