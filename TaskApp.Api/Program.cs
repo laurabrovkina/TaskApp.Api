@@ -10,6 +10,17 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddServices();
 builder.Services.AddPersistence();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "MyPolicy",
+        policy =>
+        {
+            // policy should be more restricted
+            policy.AllowAnyHeader().AllowAnyMethod();
+            policy.WithOrigins("http://localhost:5173");
+        });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
