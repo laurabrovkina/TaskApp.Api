@@ -23,9 +23,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Persistence\Database\Scripts\001_InitDatabase.sql">
+      <None Remove="Persistence\Database\Scripts\001_InitDatabase.sql" />
+      <EmbeddedResource Include="Persistence\Database\Scripts\001_InitDatabase.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>
