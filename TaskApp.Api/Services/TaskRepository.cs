@@ -42,7 +42,7 @@ public class TaskRepository
 
         const string query = "DELETE FROM tasks WHERE id = @Id";
 
-        var result = await connection.ExecuteAsync(query, id);
+        var result = await connection.ExecuteAsync(query, new { Id = id });
 
         result.Throw().IfNegativeOrZero();
     }
